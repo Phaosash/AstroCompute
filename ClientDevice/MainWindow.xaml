@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClientDevice"
+        xmlns:ctrls="clr-namespace:ClientDevice.Views"
         mc:Ignorable="d"
         Title="Astro Compute" Height="768" Width="1360">
     
@@ -15,7 +16,11 @@
 
         <!--    Left hand side content in first column  -->
         <Grid Grid.Column="0" Background="WhiteSmoke">
-            
+            <StackPanel Orientation="Vertical">
+                <ctrls:FontSeletionView />
+                <ctrls:ColourOptionsView Margin="0,10,0,0" />
+                <ctrls:LanguageSelectionView Margin="0,10,0,0" />
+            </StackPanel>
         </Grid> <!-- End left side content  -->
         
         <!--    Main Content Area   -->
@@ -31,7 +36,7 @@
                        FontSize="24" FontWeight="Bold" />
             
             <!--    Version Details     -->
-            <TextBlock Text="Astro Compute" Grid.Row="2" Margin="5"
+            <TextBlock Text="Version: 1.0.1" Grid.Row="2" Margin="5"
                        FontSize="8" HorizontalAlignment="Right" />
 
             <!--    Main Work Area  -->

@@ -1,8 +1,8 @@
 ﻿namespace WebServer.Services;
 
 public interface IAstroContract {
-    double EventHorizon (double a);
-    double Kelvin (double a);
-    double StarDistance (double a);
-    double StarVelocity (double a, double B);
+    Task<double> CalculateEventHorizonAsync (double a);
+    Task<double> CalculateKelvinAsync (double a);
+    Task<double> CalculateStarDistance (double a);
+    Task<double> CalculateStarVelocity (double a, double B);
 }

@@ -2,6 +2,6 @@
 
 namespace ClientDevice.ViewModels;
 
-internal partial class FontSelectionViewModel : ObservableObject {
+internal partial class MainWindowViewModel: ObservableObject {
 
 }

@@ -24,9 +24,6 @@
     <Reference Include="AstroMath">
       <HintPath>DLLs\AstroMath.dll</HintPath>
     </Reference>
-    <Reference Include="Galileo6">
-      <HintPath>..\..\..\SensorApp\MOABackend\DLLs\Galileo6.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

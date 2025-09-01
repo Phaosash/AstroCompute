@@ -1,8 +1,17 @@
 ﻿namespace WebServer.Services;
 
+//  Contract for astronomical calculations.
+//  Mirrors the methods provided by the third-party AstroMath.dll.
 public interface IAstroContract {
-    Task<double> CalculateEventHorizonAsync (double a);
-    Task<double> CalculateKelvinAsync (double a);
-    Task<double> CalculateStarDistance (double a);
-    Task<double> CalculateStarVelocity (double a, double B);
+    //  Calculates star velocity (m/s) from observed and rest wavelengths (nm).
+    Task<double> CalculateStarVelocityAsync(double observedWavelengthNm, double restWavelengthNm);
+
+    //  Calculates distance in parsecs from parallax angle in arcseconds.
+    Task<double> CalculateStarDistanceParsecsAsync(double parallaxArcseconds);
+
+    //  Converts Celsius to Kelvin.
+    Task<double> ConvertCelsiusToKelvinAsync(double celsius);
+
+    //  Calculates Schwarzschild radius (event horizon) in metres for given mass (kg).
+    Task<double> CalculateEventHorizonAsync(double massKg);
 }

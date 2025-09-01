@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ErrorLogging\ErrorLogging.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="AstroMath">
       <HintPath>DLLs\AstroMath.dll</HintPath>
     </Reference>

@@ -1,28 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using ClientDevice.ViewModels;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
-namespace ClientDevice.Views
-{
-    /// <summary>
-    /// Interaction logic for TextController.xaml
-    /// </summary>
-    public partial class TextController : UserControl
-    {
-        public TextController()
-        {
-            InitializeComponent();
-        }
+namespace ClientDevice.Views;
+
+public partial class TextController : UserControl {
+    private readonly TextControlManager textControlManager;
+
+    public TextController (){
+        InitializeComponent();
+
+        textControlManager = new TextControlManager();
+
+        DataContext = textControlManager;
     }
+
+    //private void UpdateText (ApplicationLanguages languages){
+    //    ControlTitle.Text = languages switch {
+    //        ApplicationLanguages.English => "Text Options",
+    //        ApplicationLanguages.German => "Textoptionen",
+    //        ApplicationLanguages.French => "Options de texte",
+    //        _ => "Text Options",
+    //    };
+    //}
 }

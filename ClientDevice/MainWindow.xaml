@@ -5,35 +5,288 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClientDevice"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:ctrls="clr-namespace:ClientDevice.Views"
+        xmlns:ctrls="clr-namespace:ClientDevice.Views" 
+        xmlns:viewmodels="clr-namespace:ClientDevice.ViewModels" 
+        xmlns:convert="clr-namespace:ClientDevice.Resources"
+        d:DataContext="{d:DesignInstance Type=viewmodels:UserInterfaceManager, IsDesignTimeCreatable=True}"
         mc:Ignorable="d"
         Title="Astro Compute" Height="768" Width="1360">
 
-    <Grid Background="#262626">
+    <Window.Resources>
+        <convert:ColourToBrushConverter x:Key="ColorToBrushConverter" />
+    </Window.Resources>
+
+    <Grid Background="{Binding BackgroundColour, Converter={StaticResource ColorToBrushConverter}}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="375*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.33*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <!--    Left hand side content in first column  -->
-        <Grid Grid.Column="0" Background="#363636">
+        <Grid Grid.Column="0" Background="{Binding PanelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}" Grid.RowSpan="2">
             <StackPanel Orientation="Vertical">
-                <!--    Adds the Font Controller    -->
-                <ctrls:TextController />
+                <!--    Text Customisation Section  -->
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <TextBlock Text="{DynamicResource TextSectionTitle}" 
+                               Background="{Binding LabelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}" 
+                               Padding="5"
+                               FontSize="{Binding TitleFontSize}" FontWeight="SemiBold" 
+                               TextWrapping="Wrap"
+                               FontFamily="{Binding TitleFonts}"
+                               Foreground="{Binding TitleTextColour, Converter={StaticResource ColorToBrushConverter}}"/>
 
-                <!--    Adds the Colour Controller-->
-                <ctrls:ColourController />
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                <!--    Adds the Language Controller    -->
-                <ctrls:LanguageController />
+                        <!--    Titles Section      -->
+                        <StackPanel Orientation="Vertical" Margin="2.5" Grid.Column="0">
+                            <TextBlock Text="{DynamicResource TextSectionSubtitle1}" 
+                                       Foreground="{Binding SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       TextWrapping="Wrap"
+                                       FontWeight="SemiBold" FontSize="{Binding SubtitleFontSize}" 
+                                       Margin=" 2.5" />
 
-                <!--    Adds the Theme Controller   -->
-                <ctrls:ThemeController />
+                            <TextBlock Text="{DynamicResource FontSelectionPrompt}" 
+                                       Foreground="{Binding BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       Margin="2.5" TextWrapping="Wrap" 
+                                       FontSize="{Binding BodyTextSize}"/>
+
+                            <ComboBox Margin="2.5" FontFamily="{Binding BodyFont}"
+                                      ItemsSource="{x:Static Fonts.SystemFontFamilies}"
+                                      FontSize="{Binding BodyTextSize}"
+                                      SelectedItem="{Binding TitleFonts}"/>
+
+                            <TextBlock Text="{DynamicResource FontSizeSelectionPrompt}" 
+                                       Foreground="{Binding BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
+                                       Margin="2.5" TextWrapping="Wrap"
+                                       FontSize="{Binding BodyTextSize}"/>
+
+                            <xctk:IntegerUpDown Value="{Binding TitleFontSize}" 
+                                                Minimum="18" Maximum="36" 
+                                                Margin="2.5" FontSize="{Binding BodyTextSize}" />
+
+                            <TextBlock Text="{DynamicResource FontcolourSelectionPrompt}"
+                                       Foreground="{Binding BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       Margin="2.5" TextWrapping="Wrap"
+                                       FontSize="{Binding BodyTextSize}" />
+
+                            <xctk:ColorPicker Margin="2.5" SelectedColor="{Binding TitleTextColour}" />
+                        </StackPanel>
+
+                        <!--    Labels Section      -->
+                        <StackPanel Orientation="Vertical" Margin="2.5" Grid.Column="1">
+                            <TextBlock Text="{DynamicResource TextSectionLabelsTitle}" 
+                                       Foreground="{Binding SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       TextWrapping="Wrap" FontWeight="SemiBold"
+                                       FontSize="{Binding SubtitleFontSize}" 
+                                       Margin=" 2.5" />
+
+                            <TextBlock Text="{DynamicResource FontSelectionPrompt}" 
+                                       Foreground="{Binding BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       Margin="2.5" TextWrapping="Wrap" 
+                                       FontSize="{Binding BodyTextSize}" />
+
+                            <ComboBox Margin="2.5" FontSize="{Binding BodyTextSize}"
+                                      ItemsSource="{x:Static Fonts.SystemFontFamilies}"
+                                      SelectedItem="{Binding SubtitleFont}"
+                                      FontFamily="{Binding BodyFont}"/>
+
+                            <TextBlock Text="{DynamicResource FontSizeSelectionPrompt}" 
+                                       Foreground="{Binding BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       Margin="2.5" TextWrapping="Wrap" 
+                                       FontSize="{Binding BodyTextSize}"/>
+
+                            <xctk:IntegerUpDown Value="{Binding SubtitleFontSize}" 
+                                                Minimum="10" Maximum="24" Margin="2.5" />
+
+                            <TextBlock Text="{DynamicResource FontcolourSelectionPrompt}"
+                                       Foreground="{Binding BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       Margin="2.5" TextWrapping="Wrap"
+                                       FontSize="{Binding BodyTextSize}"/>
+
+                            <xctk:ColorPicker Margin="2.5" SelectedColor="{Binding SubtitleTextColour}" />
+                        </StackPanel>
+
+                        <!--    Remaining Fonts Section     -->
+                        <StackPanel Orientation="Vertical" Margin="2.5" Grid.Column="2">
+                            <TextBlock Text="{DynamicResource TextSectionBodyTitle}" 
+                                       Foreground="{Binding SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       TextWrapping="Wrap"
+                                       FontWeight="SemiBold" FontSize="{Binding SubtitleFontSize}" 
+                                       Margin=" 2.5" />
+
+                            <TextBlock Text="{DynamicResource FontSelectionPrompt}" 
+                                       Foreground="{Binding BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       Margin="2.5" TextWrapping="Wrap" 
+                                       FontSize="{Binding BodyTextSize}" />
+
+                            <ComboBox Margin="2.5"
+                                      ItemsSource="{x:Static Fonts.SystemFontFamilies}"
+                                      FontSize="{Binding BodyTextSize}"
+                                      SelectedItem="{Binding BodyFont}" />
+
+                            <TextBlock Text="{DynamicResource FontSizeSelectionPrompt}" 
+                                       Foreground="{Binding BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       Margin="2.5" TextWrapping="Wrap" 
+                                       FontSize="{Binding BodyTextSize}" />
+
+                            <xctk:IntegerUpDown Value="{Binding BodyTextSize}" 
+                                                Minimum="8" Maximum="22" Margin="2.5" />
+
+                            <TextBlock Text="{DynamicResource FontcolourSelectionPrompt}"
+                                       Foreground="{Binding BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       Margin="2.5" TextWrapping="Wrap" 
+                                       FontSize="{Binding BodyTextSize}"/>
+
+                            <xctk:ColorPicker Margin="2.5" SelectedColor="{Binding BodyTextColour}" />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>   <!--    End Text Customisation Section  -->
+
+                <!--    Colour Customisation Section    -->
+                <StackPanel Margin="5" Orientation="Vertical">
+                    <TextBlock Text="{DynamicResource ColourOptionsTitle}" 
+                               Background="{Binding LabelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}" 
+                               Padding="5" TextWrapping="Wrap"
+                               FontSize="{Binding TitleFontSize}" 
+                               FontWeight="SemiBold" 
+                               Foreground="{Binding SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}" />
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!--    Background Colour Section   -->
+                        <StackPanel Orientation="Vertical" Margin="2.5" Grid.Column="0" Grid.Row="0">
+                            <TextBlock Text="{DynamicResource BackgroundColourSelectionPrompt}" 
+                                       Foreground="{Binding SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       TextWrapping="Wrap"
+                                       FontWeight="SemiBold" FontSize="{Binding SubtitleFontSize}" 
+                                       Margin=" 2.5" />
+
+                            <xctk:ColorPicker Margin="2.5" SelectedColor="{Binding BackgroundColour}" />
+                        </StackPanel>
+
+                        <!--    Panel Colour Section   -->
+                        <StackPanel Orientation="Vertical" Margin="2.5" Grid.Column="1" Grid.Row="0">
+                            <TextBlock Text="{DynamicResource PanelsColourSelectionFont}" 
+                                       Foreground="{Binding SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       TextWrapping="Wrap"
+                                       FontWeight="SemiBold" FontSize="{Binding SubtitleFontSize}" 
+                                       Margin=" 2.5" />
+
+                            <xctk:ColorPicker Margin="2.5" SelectedColor="{Binding PanelBackgroundColour}" />
+                        </StackPanel>
+
+                        <!--    Label Colour Section   -->
+                        <StackPanel Orientation="Vertical" Margin="2.5" Grid.Column="2" Grid.Row="0">
+                            <TextBlock Text="{DynamicResource LabelsColourSelectionPrompt}" 
+                                       Foreground="{Binding SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       TextWrapping="Wrap"
+                                       FontWeight="SemiBold" FontSize="{Binding SubtitleFontSize}" 
+                                       Margin=" 2.5" />
+
+                            <xctk:ColorPicker Margin="2.5" SelectedColor="{Binding LabelBackgroundColour}" />
+                        </StackPanel>
+
+                        <!--    Button Colour Section   -->
+                        <StackPanel Orientation="Vertical" Margin="2.5" Grid.Column="0" Grid.Row="1">
+                            <TextBlock Text="{DynamicResource ButtonColourSelectionPrompt}" 
+                                       Foreground="{Binding SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       TextWrapping="Wrap"
+                                       FontWeight="SemiBold" FontSize="{Binding SubtitleFontSize}" 
+                                       Margin=" 2.5" />
+
+                            <xctk:ColorPicker Margin="2.5" SelectedColor="{Binding ButtonBackgroundColour}" />
+                        </StackPanel>
+
+                        <!--    Data Grid Colour Section   -->
+                        <StackPanel Orientation="Vertical" Margin="2.5" Grid.Column="1" Grid.Row="1">
+                            <TextBlock Text="{DynamicResource DataGridColourSelectionPrompt}" 
+                                       Foreground="{Binding SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}" 
+                                       TextWrapping="Wrap"
+                                       FontWeight="SemiBold" FontSize="{Binding SubtitleFontSize}" 
+                                       Margin=" 2.5" />
+
+                            <xctk:ColorPicker Margin="2.5" SelectedColor="{Binding DataGridBackgroundColour}" />
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+                <!--    End Colour Customisation Section    -->
+
+                <!--    Language Selection Section      -->
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <TextBlock Text="{DynamicResource LanguageSelectionTitle}" 
+                               Background="{Binding LabelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}" 
+                               Padding="5" TextWrapping="Wrap"
+                               FontSize="{Binding TitleFontSize}" FontWeight="SemiBold" 
+                               Foreground="{Binding TitleTextColour, Converter={StaticResource ColorToBrushConverter}}" />
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--    English Button  -->
+                        <Button Content="{DynamicResource EnglishButtonText}" 
+                                Grid.Column="0" Padding="5" FontSize="{Binding BodyTextSize}"
+                                Margin="5" Command="{Binding SwitchToEnglishCommand}"
+                                Background="{Binding ButtonBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
+                                Foreground="{Binding BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" />
+
+                        <!--    French Button   -->
+                        <Button Content="{DynamicResource FrenchButtonText}" 
+                                Grid.Column="1" Padding="5" FontSize="{Binding BodyTextSize}"
+                                Margin="5" Command="{Binding SwitchToFrenchCommand}"
+                                Background="{Binding ButtonBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
+                                Foreground="{Binding BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" />
+
+                        <!--    German Button-->
+                        <Button Content="{DynamicResource GermanButtonText}" 
+                                Grid.Column="2" Padding="5" FontSize="{Binding BodyTextSize}"
+                                Margin="5" Command="{Binding SwitchToGermanCommand}"
+                                Background="{Binding ButtonBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
+                                Foreground="{Binding BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" />
+                    </Grid>
+                </StackPanel>   <!--    End Language Selection Section  -->
+
+                <!--    Theme Switching Section     -->
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <TextBlock Text="{DynamicResource ChangeThemeTitle}" 
+                               Background="{Binding LabelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}" 
+                               Padding="5" TextWrapping="Wrap"
+                               FontSize="{Binding TitleFontSize}" FontWeight="SemiBold" 
+                               Foreground="{Binding SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}" />
+
+                    <!--    Toggle Theme or Switch to Night Mode / Switch to Day Mode dynamically.-->
+                    <Button Content="{DynamicResource DayThemeButtonPrompt}" 
+                            Margin="5" Padding="5" FontSize="{Binding BodyTextSize}"
+                            Background="{Binding ButtonBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
+                            Foreground="{Binding BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" />
+                </StackPanel>   <!-- End Theme Switching Section    -->
             </StackPanel>
-        </Grid>
+        </Grid> <!--    End Left Hand Side Content      -->
 
         <!--    Main Content Area   -->
-        <Grid Grid.Column="1">
+        <Grid Grid.ColumnSpan="2" Margin="337,0,0,0" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -41,37 +294,212 @@
             </Grid.RowDefinitions>
 
             <!--    Application Title   -->
-            <TextBlock Text="Astro Compute" Grid.Row="0" Margin="5"
-                       FontSize="24" FontWeight="Bold" Foreground="#D9D9D9" />
+            <TextBlock Text="{DynamicResource ApplicationTitle}" Grid.Row="0" 
+                       Margin="5" TextWrapping="Wrap" FontWeight="Bold"
+                       FontSize="{Binding TitleFontSize}"  Foreground="#D9D9D9" />
 
             <!--    Version Details     -->
-            <TextBlock Text="Version: 1.0.1" Grid.Row="2" Margin="5"
-                       FontSize="8" HorizontalAlignment="Right" Foreground="#D9D9D9" />
+            <TextBlock Grid.Row="2" Margin="5" FontSize="8"
+                       HorizontalAlignment="Right" Foreground="#D9D9D9">
+                <Run Text="{DynamicResource VersionText}" />
+                <Run Text=": 1.0.1" />
+            </TextBlock>
 
+            <!--    Calculations and Display Section    -->
             <Grid Grid.Row="1" Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <!--    Calculation Control Elements Section    -->
+                <!--    Calculation Elements Section    -->
                 <StackPanel Orientation="Vertical" Grid.Column="0">
-                    <!--    Adds the Star Velocity control  -->
-                    <ctrls:StarVelocityControl />
+                    <!--    Event Horizon Section    -->
+                    <Border Grid.Row="3" BorderThickness="0,0,0,2" BorderBrush="Gray" Margin="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
 
-                    <!--    Adds the Star Distance Control  -->
-                    <ctrls:StarDistanceControl />
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                    <!--    Adds the Temperature Conversion Control     -->
-                    <ctrls:TemperatureConversionControl />
+                            <TextBlock Text="{DynamicResource EventHorizonTitle}" 
+                                       FontSize="{Binding TitleFontSize}" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="#D9D9D9" Margin="2.5" 
+                                       Grid.Column="0" Grid.Row="0"
+                                       TextWrapping="Wrap" />
 
-                    <!--    Adds the Event Horizon Control  -->
-                    <ctrls:EventHorizonControl />
+                            <TextBlock Text="{DynamicResource EventHorizonPrompt}" 
+                                       FontSize="{Binding BodyTextSize}" 
+                                       Foreground="#D9D9D9"
+                                       Grid.Column="0" Grid.Row="1" Margin="2.5"
+                                       TextWrapping="Wrap" />
+
+                            <TextBox Margin="2.5" Grid.Row="2" Grid.Column="0"
+                                     FontSize="{Binding BodyTextSize}" />
+
+                            <Button Content="{DynamicResource CalculateButtonText}" 
+                                    Grid.Column="1" Grid.Row="2" Margin="2.5" 
+                                    Padding="2.5" FontSize="{Binding BodyTextSize}" />
+                        </Grid>
+                    </Border>
+                    <!--    End Even Horizon Section    -->
+
+                    <!-- Star Distance Section  -->
+                    <Border Grid.Row="1" BorderThickness="0,0,0,2" BorderBrush="Gray" Margin="5">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!--    Title   -->
+                            <TextBlock Text="{DynamicResource StarDistanceTitle}" 
+                                       FontSize="{Binding TitleFontSize}" FontWeight="SemiBold" 
+                                       Foreground="#D9D9D9" Margin="2.5" 
+                                       Grid.Column="0" Grid.Row="0"
+                                       TextWrapping="Wrap"/>
+
+                            <TextBlock Text="{DynamicResource StarDistancePrompt}" 
+                                       FontSize="{Binding BodyTextSize}" 
+                                       Foreground="#D9D9D9" TextWrapping="Wrap"
+                                       Grid.Column="0" Grid.Row="1" Margin="2.5" />
+
+                            <TextBox Grid.Row="2" Grid.Column="0" Margin="2.5"
+                                     FontSize="{Binding BodyTextSize}"/>
+
+                            <Button Content="{DynamicResource CalculateButtonText}" 
+                                    Grid.Column="1" Grid.Row="2" FontSize="{Binding BodyTextSize}" 
+                                    Margin="2.5" Padding="2.5" />
+                        </Grid>
+                    </Border>
+                    <!--    End Star Distance Section   -->
+
+                    <!--    Velocity Section    -->
+                    <Border BorderThickness="0,0,0,2" BorderBrush="Gray" Margin="5" Grid.Row="0">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!--    Title   -->
+                            <TextBlock Text="{DynamicResource StarVelocityTitle}" 
+                                       FontSize="{Binding TitleFontSize}" 
+                                       FontWeight="SemiBold" TextWrapping="Wrap"
+                                       Foreground="#D9D9D9" Margin="2.5" 
+                                       Grid.Column="0" Grid.Row="0" />
+
+                            <!--    Observed Wave Length Section  -->
+                            <StackPanel Orientation="Vertical" Margin="2.5" Grid.Column="0" Grid.Row="1">
+                                <TextBlock Text="{DynamicResource ObservedWaveLengthPromptText}" 
+                                           FontSize="{Binding BodyTextSize}" 
+                                           Foreground="#D9D9D9"
+                                           Margin="2.5" TextWrapping="Wrap" />
+
+                                <TextBox Margin="2.5" FontSize="{Binding BodyTextSize}" />
+
+                                <TextBlock Text="{DynamicResource RestWaveLengthPromptText}" 
+                                           FontSize="{Binding BodyTextSize}" 
+                                           Foreground="#D9D9D9"
+                                           Margin="2.5" TextWrapping="Wrap" />
+
+                                <TextBox Margin="2.5" />
+                            </StackPanel>
+
+                            <Button Content="{DynamicResource CalculateButtonText}" 
+                                    Grid.Column="1" Grid.Row="2" Padding="2.5" 
+                                    Margin="2.5" FontSize="{Binding BodyTextSize}"
+                                    VerticalAlignment="Bottom"/>
+                        </Grid>
+                    </Border>
+                    <!--    End Velocity Section    -->
+
+                    <!--    Temperature Section     -->
+                    <Border Grid.Row="2" BorderThickness="0,0,0,2" BorderBrush="Gray" Margin="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <!--    Title   -->
+                            <TextBlock Text="{DynamicResource TemperatureConversionTitle}" 
+                                       FontSize="{Binding TitleFontSize}" 
+                                       FontWeight="SemiBold" TextWrapping="Wrap"
+                                       Foreground="#D9D9D9" Margin="2.5" 
+                                       Grid.Column="0" Grid.Row="0" />
+
+                            <TextBlock Text="{DynamicResource TemperaturePrompt}" 
+                                       FontSize="{Binding BodyTextSize}" 
+                                       Margin="2.5" TextWrapping="Wrap"
+                                       Foreground="#D9D9D9" Grid.Column="0" 
+                                       Grid.Row="1" />
+
+                            <TextBox Grid.Row="2" Grid.Column="0" Margin="2.5"
+                                     FontSize="{Binding BodyTextSize}" />
+
+                            <Button Content="{DynamicResource CalculateButtonText}" 
+                                    Grid.Column="2" Grid.Row="2" 
+                                    Margin="2.5" Padding="2.5"
+                                    FontSize="{Binding BodyTextSize}"/>
+                        </Grid>
+                    </Border>
+                    <!--    End Temperate Section   -->
                 </StackPanel>
+                <!--    End Calculation Elements Section    -->
 
-                <!--    Adds the Data Display Control   -->
-                <ctrls:DataDisplayControl Grid.Column="1" />
+                <!--    Data Grid Section   -->
+                <StackPanel Margin="5" Grid.Column="1">
+                    <!--    Title   -->
+                    <TextBlock Text="{DynamicResource DataSectionTitle}"
+                               FontSize="{Binding TitleFontSize}" FontWeight="SemiBold" 
+                               Foreground="#D9D9D9" Margin="2.5" Grid.Column="0" 
+                               Grid.Row="0" TextWrapping="Wrap" />
+
+                    <DataGrid>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{DynamicResource StarDistanceGridText}"
+                                                FontSize="{Binding BodyTextSize}" />
+
+                            <DataGridTextColumn Header="{DynamicResource StarVelocityGridText}"
+                                                FontSize="{Binding BodyTextSize}" />
+
+                            <DataGridTextColumn Header="{DynamicResource TemperateGridText}"
+                                                FontSize="{Binding BodyTextSize}"/>
+
+                            <DataGridTextColumn Header="{DynamicResource EventGridText}"
+                                                FontSize="{Binding BodyTextSize}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+                <!--    End data Grid Section   -->
             </Grid>
+            <!--    End Calculations and Display Section    -->
         </Grid>
+        <!--    End Main Content Area   -->
     </Grid>
 </Window>

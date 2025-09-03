@@ -1,4 +1,4 @@
-﻿using ClientDevice.ViewModels;
+﻿using ClientDevice.Classes;
 using System.Windows;
 
 namespace ClientDevice;

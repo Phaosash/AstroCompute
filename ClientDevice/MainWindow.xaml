@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClientDevice"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:ctrls="clr-namespace:ClientDevice.Views" 
         xmlns:viewmodels="clr-namespace:ClientDevice.ViewModels" 
         xmlns:convert="clr-namespace:ClientDevice.Resources"
         d:DataContext="{d:DesignInstance Type=viewmodels:UserInterfaceManager, IsDesignTimeCreatable=True}"

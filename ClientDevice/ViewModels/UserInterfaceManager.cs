@@ -106,12 +106,13 @@ internal partial class UserInterfaceManager : ObservableObject {
 
         ApplyTheme();
         InitialiseColours();
+        ChangeLanguage();
     }
 
     private void ApplyTheme (){
         Uri themeUri = currentTheme switch {
-            DefaultThemes.Day => new Uri("Resources/DayTheme.xaml", UriKind.Absolute),
-            DefaultThemes.Night => new Uri("Resources/NightTheme.xaml", UriKind.Absolute),
+            DefaultThemes.Day => new Uri("Resources/DayTheme.xaml", UriKind.Relative),
+            DefaultThemes.Night => new Uri("Resources/NightTheme.xaml", UriKind.Relative),
             _ => new Uri("Resources/DayTheme.xaml", UriKind.Absolute),
         };
 

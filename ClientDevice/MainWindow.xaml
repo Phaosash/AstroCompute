@@ -158,7 +158,7 @@
                                Padding="5" TextWrapping="Wrap"
                                FontSize="{Binding TitleFontSize}" 
                                FontWeight="SemiBold" 
-                               Foreground="{Binding SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}" />
+                               Foreground="{Binding TitleTextColour, Converter={StaticResource ColorToBrushConverter}}" />
 
                     <Grid Margin="5">
                         <Grid.ColumnDefinitions>
@@ -274,7 +274,7 @@
                                Background="{Binding LabelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}" 
                                Padding="5" TextWrapping="Wrap"
                                FontSize="{Binding TitleFontSize}" FontWeight="SemiBold" 
-                               Foreground="{Binding SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}" />
+                               Foreground="{Binding TitleTextColour, Converter={StaticResource ColorToBrushConverter}}" />
 
                     <!--    Toggle Theme or Switch to Night Mode / Switch to Day Mode dynamically.-->
                     <Button Content="{DynamicResource DayThemeButtonPrompt}" 

@@ -18,7 +18,7 @@ public class AstroController(IAstroContract astro) : ControllerBase {
         }
 
         try {
-            double result = await _astro.CalculateStarVelocityAsync(req.ObservedWavelengthNm, req.RestWavelengthNm);
+            double result = await _astro.CalculateStarVelocityAsync(req.ObservedWavelength, req.RestWavelength);
 
             return Ok(new ValueResponse { Value = result, Formatted = FormatScientific(result), Unit = "m/s" });
         } catch (ArgumentOutOfRangeException ex){
@@ -39,7 +39,7 @@ public class AstroController(IAstroContract astro) : ControllerBase {
         }
 
         try {
-            double result = await _astro.CalculateStarDistanceParsecsAsync(req.ParallaxArcseconds);
+            double result = await _astro.CalculateStarDistanceParsecsAsync(req.ParallaxAngle);
 
             return Ok(new ValueResponse { Value = result, Formatted = FormatScientific(result), Unit = "pc" });
         } catch (ArgumentOutOfRangeException ex){
@@ -81,7 +81,7 @@ public class AstroController(IAstroContract astro) : ControllerBase {
         }
 
         try {
-            double result = await _astro.CalculateEventHorizonAsync(req.MassKg);
+            double result = await _astro.CalculateEventHorizonAsync(req.Mass);
             return Ok (new ValueResponse { Value = result, Formatted = FormatScientific(result), Unit = "m" });
         } catch (ArgumentOutOfRangeException ex){
             LoggingManager.Instance.LogError(ex, "Web Server: Astro Controller - Event Horizon Method.");
@@ -99,8 +99,8 @@ public class AstroController(IAstroContract astro) : ControllerBase {
             return value.ToString(CultureInfo.InvariantCulture);
         }
 
-        // Use "G" or custom formatting to produce scientific notation with n significant digits.
-        // We'll format as: 1.234E+05
+        //  Use "G" or custom formatting to produce scientific notation with n significant digits.
+        //  Will format as: 1.234E+05
         string fmt = "E" + (significantDigits - 1).ToString();
         return value.ToString(fmt, CultureInfo.InvariantCulture);
     }

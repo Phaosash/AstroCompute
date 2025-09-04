@@ -224,17 +224,6 @@
 
                             <xctk:ColorPicker Margin="2.5" SelectedColor="{Binding ColourSettings.ButtonBackgroundColour}" />
                         </StackPanel>
-
-                        <!--    Data Grid Colour Section   -->
-                        <StackPanel Orientation="Vertical" Margin="2.5" Grid.Column="1" Grid.Row="1">
-                            <TextBlock Text="{DynamicResource DataGridColourSelectionPrompt}" 
-                                       Foreground="{Binding ColourSettings.SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}" 
-                                       TextWrapping="Wrap" FontFamily="{Binding FontSettings.SubtitleFont}"
-                                       FontWeight="SemiBold" FontSize="{Binding FontSettings.SubtitleFontSize}" 
-                                       Margin=" 2.5" />
-
-                            <xctk:ColorPicker Margin="2.5" SelectedColor="{Binding ColourSettings.PanelBackgroundColour}" />
-                        </StackPanel>
                     </Grid>
                 </StackPanel>   <!--    End Colour Customisation Section    -->
 
@@ -382,7 +371,11 @@
                            Grid.Column="0" Grid.Row="6"/>
 
                 <!--    Output field    -->
-                <ListView Margin="2.5" Grid.Column="0" Grid.Row="7" />
+                <ListView Margin="2.5" Grid.Column="0" Grid.Row="7" BorderBrush="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
+                          FontFamily="{Binding FontSettings.BodyFont}"
+                          FontSize="{Binding FontSettings.BodyFontSize}"
+                          Background="{Binding ColourSettings.PanelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
+                          Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"/>
 
                 <!--    Star Distance Section   -->
                 <!--    Title   -->
@@ -421,7 +414,12 @@
                            Grid.Column="1" Grid.Row="6"/>
                 
                 <!--    Output field    -->
-                <ListView Margin="2.5" Grid.Column="1" Grid.Row="7" />
+                <ListView Margin="2.5" Grid.Column="1" Grid.Row="7" 
+                          BorderBrush="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
+                          FontFamily="{Binding FontSettings.BodyFont}"
+                          FontSize="{Binding FontSettings.BodyFontSize}"
+                          Background="{Binding ColourSettings.PanelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
+                          Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"/>
 
                 <!--    Star Velocity Section   -->
                 <!--    Title   -->
@@ -472,7 +470,12 @@
                            Grid.Column="2" Grid.Row="6"/>
 
                 <!--    Output field    -->
-                <ListView Margin="2.5" Grid.Column="2" Grid.Row="7" />
+                <ListView Margin="2.5" Grid.Column="2" Grid.Row="7" 
+                          BorderBrush="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
+                          FontFamily="{Binding FontSettings.BodyFont}"
+                          FontSize="{Binding FontSettings.BodyFontSize}"
+                          Background="{Binding ColourSettings.PanelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
+                          Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"/>
                 
                 <!--    Temperature Conversion Section  -->
                 <!--    Title   -->
@@ -512,7 +515,12 @@
                            Grid.Column="3" Grid.Row="6"/>
 
                 <!--    Output field    -->
-                <ListView Margin="2.5" Grid.Column="3" Grid.Row="7" />
+                <ListView Margin="2.5" Grid.Column="3" Grid.Row="7" 
+                          BorderBrush="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
+                          FontFamily="{Binding FontSettings.BodyFont}"
+                          FontSize="{Binding FontSettings.BodyFontSize}"
+                          Background="{Binding ColourSettings.PanelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
+                          Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"/>
             </Grid> <!--    End Calculations and Display Section    -->
         </Grid> <!--    End Main Content Area   -->
     </Grid>

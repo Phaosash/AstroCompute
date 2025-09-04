@@ -46,7 +46,7 @@ internal partial class UserInterfaceManager : ObservableObject {
             SubtitleFont = new FontFamily("Segoe UI"),
             BodyFont = new FontFamily("Segoe UI"),
             TitleFontSize = 24,
-            SubtitleFontSize = 14,
+            SubtitleFontSize = 16,
             BodyFontSize = 12
         };
     }

@@ -277,12 +277,12 @@
                                Foreground="{Binding ColourSettings.TitleTextColour, Converter={StaticResource ColorToBrushConverter}}" />
 
                     <!--    Toggle Theme or Switch to Night Mode / Switch to Day Mode dynamically.-->
-                    <Button Content="{DynamicResource DayThemeButtonPrompt}" 
+                    <Button Content="{DynamicResource ThemeSwitchPrompt}" 
                             Margin="5" Padding="5" FontSize="{Binding FontSettings.BodyFontSize}"
                             FontFamily="{Binding FontSettings.BodyFont}"
                             Background="{Binding ColourSettings.ButtonBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
                             Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
-                            Command="{Binding SwitchThemesCommand}"/>
+                            Command="{Binding SwitchThemesCommand}" />
                 </StackPanel>   <!-- End Theme Switching Section    -->
             </StackPanel>
         </Grid> <!--    End Left Hand Side Content      -->

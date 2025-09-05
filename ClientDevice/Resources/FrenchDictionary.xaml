@@ -8,9 +8,6 @@
     <System:String x:Key="CalculateButtonText">Calculer</System:String>
     <System:String x:Key="ChangeThemeTitle">Changer de thème</System:String>
     <System:String x:Key="ColourOptionsTitle">Options de couleur</System:String>
-    <System:String x:Key="DataGridColourSelectionPrompt">Grille de données</System:String>
-    <System:String x:Key="DataSectionTitle">Affichage de sortie de données</System:String>
-    <System:String x:Key="DayThemeButtonPrompt">Passer en mode jour</System:String>
     <System:String x:Key="EnglishButtonText">Anglais (Royaume-Uni)</System:String>
     <System:String x:Key="EventGridText">Taille de l'horizon des événements</System:String>
     <System:String x:Key="EventHorizonTitle">Calculer l'horizon des événements</System:String>
@@ -22,7 +19,6 @@
     <System:String x:Key="GermanButtonText">Allemand</System:String>
     <System:String x:Key="LabelsColourSelectionPrompt">Étiquettes</System:String>
     <System:String x:Key="LanguageSelectionTitle">Sélection de la langue</System:String>
-    <System:String x:Key="NightThemeButtonPrompt">Passer en mode nuit</System:String>
     <System:String x:Key="ObservedWaveLengthPromptText">Observed Wave Length</System:String>
     <System:String x:Key="PanelsColourSelectionFont">Longueur d'onde observée</System:String>
     <System:String x:Key="RestWaveLengthPromptText">Longueur d'onde de repos</System:String>
@@ -40,4 +36,5 @@
     <System:String x:Key="TextSectionTitle">Options de texte</System:String>
     <System:String x:Key="VersionText">Version</System:String>
     <System:String x:Key="OutputSubTitle">Données de sortie</System:String>
+    <System:String x:Key="ThemeSwitchPrompt">Passer en mode jour/nuit</System:String>
 </ResourceDictionary>

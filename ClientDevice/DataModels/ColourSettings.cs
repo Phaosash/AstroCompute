@@ -1,8 +1,10 @@
-﻿using System.Windows.Media;
+﻿using ClientDevice.Classes;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.Windows.Media;
 
 namespace ClientDevice.DataModels;
 
-public class ColourSettings {
+public partial class ColourSettings : ObservableObject {
     public Color BackgroundColour { get; set; }
     public Color PanelBackgroundColour { get; set; }
     public Color TitleTextColour { get; set; }

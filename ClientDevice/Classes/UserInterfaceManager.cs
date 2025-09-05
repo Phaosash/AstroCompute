@@ -2,68 +2,59 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ErrorLogging;
-using System.Windows;
+using System.Collections.ObjectModel;
 
 namespace ClientDevice.Classes;
 
 public partial class UserInterfaceManager : ObservableObject {
     private readonly IAstroContract _apiInterface;
-    private enum AvailableLanguages { 
-        English, 
-        French, 
-        German 
-    }
+    private enum Languages { English, French, German }
+    private enum Themes { Day, Night }
+    private enum CalculationTypes { Velocity, Temperature, Distance, Mass }
+    private Languages _language = Languages.English;
+    private Themes _theme = Themes.Night;
+    private CalculationTypes _lastCalculation;
 
-    private enum DefaultThemes { 
-        Day, 
-        Night
-    }
-
-    private AvailableLanguages currentLanguage;
-    private DefaultThemes currentTheme;
-    private bool isNightTheme;
-
-    private readonly Dictionary<DefaultThemes, string> ThemeMappings = new(){
-        { DefaultThemes.Day, "Resources/DayTheme.xaml" },
-        { DefaultThemes.Night, "Resources/NightTheme.xaml" }
+    private readonly Dictionary<Themes, string> _themePaths = new(){
+        { Themes.Day, "Resources/DayTheme.xaml" },
+        { Themes.Night, "Resources/NightTheme.xaml" }
     };
 
-    private readonly Dictionary<AvailableLanguages, string> LanguageMappings = new(){
-        { AvailableLanguages.English, "Resources/EnglishDictionary.xaml" },
-        { AvailableLanguages.French, "Resources/FrenchDictionary.xaml" },
-        { AvailableLanguages.German, "Resources/GermanDictionary.xaml" }
+    private readonly Dictionary<Languages, string> _languagePaths = new(){
+        { Languages.English, "Resources/EnglishDictionary.xaml" },
+        { Languages.French, "Resources/FrenchDictionary.xaml" },
+        { Languages.German, "Resources/GermanDictionary.xaml" }
     };
 
-    [ObservableProperty] private FontSettings? _fontSettings;
-    [ObservableProperty] private ColourSettings? _colourSettings;
-    [ObservableProperty] private DataValues? _inputedValue;
-    [ObservableProperty] private OutputValues? _calculationResults;
+    [ObservableProperty] private FontSettings? _fontSettings = new();
+    [ObservableProperty] private ColourSettings? _colourSettings = new();
+    [ObservableProperty] private DataValues? _inputedValue = new();
+    [ObservableProperty] private OutputValues? _calculationResults = new();
+    [ObservableProperty] private bool _isNightTheme = true;
 
     public UserInterfaceManager (IAstroContract contract){
         _apiInterface = contract;
-        CalculationResults = new OutputValues();
-        InputedValue = new DataValues();
-        FontSettings = new FontSettings();
-        currentLanguage = AvailableLanguages.English;
-        currentTheme = DefaultThemes.Night;
-        isNightTheme = true;
-
-        UpdateThemeColours();
+        UpdateTheme();
     }
 
     [RelayCommand]
-    private void SwitchThemes (){
-        isNightTheme = !isNightTheme;
-        currentTheme = isNightTheme ? DefaultThemes.Night : DefaultThemes.Day;
+    private void SwitchThemes (){       
+        IsNightTheme = !IsNightTheme;
+        _theme = IsNightTheme ? Themes.Night : Themes.Day;
 
-        ApplyTheme();
-        UpdateThemeColours();
-        ChangeLanguage();        
+        UpdateColours();   
     }
 
-    //  Tried moving this into the ColourSetting.cs, for some reason in broke the theme switching, so
-    //  moved it back to fix the issue
-    private void UpdateThemeColours (){
+    private void UpdateTheme (){
+        var uri = new Uri(_themePaths[_theme], UriKind.Relative);
+        UISettingsService.UpdateResourceDictionary(uri);
+        UpdateColours();
+        ChangeLanguage(_language);
+    }
+
+    private void UpdateColours (){
+        //  Tried moving this into the ColourSetting.cs, for some reason in broke the theme switching, so
+        //  moved it back to fix the issue
         ColourSettings = new ColourSettings {
             BackgroundColour = UISettingsService.GetColorFromResources("WindowBackground"),
             PanelBackgroundColour = UISettingsService.GetColorFromResources("PanelBackground"),
@@ -75,132 +66,61 @@ public partial class UserInterfaceManager : ObservableObject {
         };
     }
 
-    private void ApplyTheme (){
-        var themeUri = new Uri(ThemeMappings[currentTheme], UriKind.Relative);
-        UISettingsService.UpdateResourceDictionary(themeUri);
-    }
-
-    private void ChangeLanguage (){
-        var languageUri = new Uri(LanguageMappings[currentLanguage], UriKind.Relative);
+    private void ChangeLanguage (Languages language){
+        _language = language;
+        var languageUri = new Uri(_languagePaths[_language], UriKind.Relative);
         UISettingsService.UpdateResourceDictionary(languageUri);
     }
 
-    private void SwitchLanguage (AvailableLanguages language){
-        currentLanguage = language;
-        ChangeLanguage();
-    }
+    [RelayCommand] private void SwitchToFrench() => ChangeLanguage(Languages.French);
+    [RelayCommand] private void SwitchToGerman() => ChangeLanguage(Languages.German);
+    [RelayCommand] private void SwitchToEnglish() => ChangeLanguage(Languages.English);
 
-    [RelayCommand]
-    private void SwitchToFrench() => SwitchLanguage(AvailableLanguages.French);
+    [RelayCommand] private async Task CalculateVelocity() => await AddResult(CalculationTypes.Velocity);
+    [RelayCommand] private async Task CalculateDistance() => await AddResult(CalculationTypes.Distance);
+    [RelayCommand] private async Task ConvertTemperature() => await AddResult(CalculationTypes.Temperature);
+    [RelayCommand] private async Task CalculateEventHorizon() => await AddResult(CalculationTypes.Mass);
 
-    [RelayCommand]
-    private void SwitchToGerman() => SwitchLanguage(AvailableLanguages.German);
+    private async Task<double> GetResultAsync (CalculationTypes types){
+        if (InputedValue == null){
+            LoggingManager.Instance.LogWarning("Input is null.");
+            return -1;
+        }
 
-    [RelayCommand]
-    private void SwitchToEnglish() => SwitchLanguage(AvailableLanguages.English);
+        _lastCalculation = types;
 
-    [RelayCommand]
-    private async Task CalculateVelocity (){
         try {
-            if (CalculationResults?.Velocities == null){
-                LoggingManager.Instance.LogWarning("CalculationResults.Velocities is null.");
-                return;
-            }
-
-            if (InputedValue == null){
-                LoggingManager.Instance.LogWarning("InputedValue is null.");
-                return;
-            }
-            double velocity = await _apiInterface.CalculateStarVelocityAsync(InputedValue.ObservedWL, InputedValue.RestWL);
-
-            if (velocity > 0){
-                CalculationResults.Velocities.Add(new Measurement {
-                    Timestamp = DateTime.Now,
-                    Value = velocity
-                });
-            }
-        } catch (Exception ex){
-            LoggingManager.Instance.LogError(ex, "Failed to calculate the Velocity!");
+            return types switch {
+                CalculationTypes.Distance => await _apiInterface.CalculateStarDistanceParsecsAsync(InputedValue.ParalaxAngle),
+                CalculationTypes.Temperature => await _apiInterface.ConvertCelsiusToKelvinAsync(InputedValue.Temperature),
+                CalculationTypes.Mass => await _apiInterface.CalculateEventHorizonAsync(InputedValue.Mass),
+                CalculationTypes.Velocity => await _apiInterface.CalculateStarVelocityAsync(InputedValue.ObservedWL, InputedValue.RestWL),
+                _ => -1
+            };
+        } catch (Exception ex) {
+            LoggingManager.Instance.LogError(ex, "Error during calculation.");
+            return -1;
         }
     }
 
-    [RelayCommand]
-    private async Task CalculateEventHorizon (){
-        try {
-            if (CalculationResults?.Horizons == null){
-                LoggingManager.Instance.LogWarning("CalculationResults.Velocities is null.");
-                return;
-            }
-
-            if (InputedValue == null){
-                LoggingManager.Instance.LogWarning("InputedValue is null.");
-                return;
-            }
-
-            double mass = await _apiInterface.CalculateEventHorizonAsync(InputedValue.Mass);
-
-            if (mass > 0){
-                CalculationResults.Horizons.Add(new Measurement {
-                    Timestamp = DateTime.Now,
-                    Value = mass
-                });
-            }
-        } catch (Exception ex){
-            LoggingManager.Instance.LogError(ex, "Failed to calculate the Event Horizon!");
+    private async Task AddResult (CalculationTypes types){       
+        var result = await GetResultAsync(types);
+        
+        if (result >= 0) {
+            var list = GetResultList(types);
+            list?.Add(new Measurement { Timestamp = DateTime.Now, Value = result });
         }
     }
 
-    [RelayCommand]
-    private async Task CalculateDistance (){
-        try {
-            if (CalculationResults?.Distances == null){
-                MessageBox.Show("Encountered an unexpected problem while trying to calculate the star distance.");
-                LoggingManager.Instance.LogWarning("CalculationResults.Velocities is null.");
-                return;
-            }
+    private ObservableCollection<Measurement>? GetResultList (CalculationTypes type){
+        if (CalculationResults == null) return null;
 
-            if (InputedValue == null){
-                MessageBox.Show("Inputed Value cannot be null when calculating the mass of the event horizon.");
-                LoggingManager.Instance.LogWarning("InputedValue is null.");
-                return;
-            }
-
-            double distance = await _apiInterface.CalculateStarDistanceParsecsAsync(InputedValue.ParalaxAngle);
-
-            if (distance > 0){
-                CalculationResults.Distances.Add(new Measurement {
-                    Timestamp = DateTime.Now,
-                    Value = distance
-                });
-            }
-        } catch (Exception ex){
-            LoggingManager.Instance.LogError(ex, "Failed to calculate the star distance!");
-        }
-    }
-
-    [RelayCommand]
-    private async Task ConvertTemperature (){
-        try {
-            if (CalculationResults?.Temperatures == null){
-                LoggingManager.Instance.LogWarning("CalculationResults.Temperatures is null.");
-                return;
-            }
-
-            if (InputedValue == null){
-                LoggingManager.Instance.LogWarning("InputedValue is null.");
-                return;
-            }
-
-            double result = await _apiInterface.ConvertCelsiusToKelvinAsync(InputedValue.Temperature);
-
-            if (result > 0){                
-                CalculationResults.Temperatures.Add(new Measurement {
-                    Timestamp = DateTime.Now,
-                    Value = result
-                });
-            }
-        } catch (Exception ex){
-            LoggingManager.Instance.LogError(ex, "Failed to convert the temperature!");
-        }
+        return type switch {
+            CalculationTypes.Distance => CalculationResults.Distances,
+            CalculationTypes.Temperature => CalculationResults.Temperatures,
+            CalculationTypes.Mass => CalculationResults.Horizons,
+            CalculationTypes.Velocity => CalculationResults.Velocities,
+            _ => null
+        };
     }
 }

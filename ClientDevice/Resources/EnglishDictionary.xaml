@@ -8,9 +8,6 @@
     <System:String x:Key="CalculateButtonText">Calculate</System:String>
     <System:String x:Key="ChangeThemeTitle">Change Theme</System:String>
     <System:String x:Key="ColourOptionsTitle">Colour Options</System:String>
-    <System:String x:Key="DataGridColourSelectionPrompt">Data Grid</System:String>
-    <System:String x:Key="DataSectionTitle">Data Output Display</System:String>
-    <System:String x:Key="DayThemeButtonPrompt">Switch to Day Mode</System:String>
     <System:String x:Key="EnglishButtonText">English (UK)</System:String>
     <System:String x:Key="EventGridText">Event Horizon Size</System:String>
     <System:String x:Key="EventHorizonTitle">Calculate the Event Horizon</System:String>
@@ -22,7 +19,6 @@
     <System:String x:Key="GermanButtonText">German</System:String>
     <System:String x:Key="LabelsColourSelectionPrompt">Labels</System:String>
     <System:String x:Key="LanguageSelectionTitle">Language Selection</System:String>
-    <System:String x:Key="NightThemeButtonPrompt">Switch to Night Mode</System:String>
     <System:String x:Key="ObservedWaveLengthPromptText">Observed Wave Length</System:String>
     <System:String x:Key="PanelsColourSelectionFont">Panels</System:String>
     <System:String x:Key="RestWaveLengthPromptText">Rest Wave Length</System:String>
@@ -40,4 +36,5 @@
     <System:String x:Key="TextSectionTitle">Text Options</System:String>
     <System:String x:Key="VersionText">Version</System:String>
     <System:String x:Key="OutputSubTitle">Output Data</System:String>
+    <System:String x:Key="ThemeSwitchPrompt">Switch to Day / Night Mode</System:String>
 </ResourceDictionary>

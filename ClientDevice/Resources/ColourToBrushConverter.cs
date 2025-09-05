@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace ClientDevice.Resources;
 
-class ColourToBrushConverter: IValueConverter {
+public class ColourToBrushConverter: IValueConverter {
     //  This method is used to conviert a Colour into a Solid Colour Brush, so that it can be
     //  displayed correctly on the UI
     public object Convert (object value, Type targetType, object parameter, CultureInfo culture){

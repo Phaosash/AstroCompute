@@ -1,10 +1,13 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using ClientDevice.DataModels;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Windows.Media;
+using ErrorLogging;
+using System.Windows;
 
 namespace ClientDevice.Classes;
 
-internal partial class UserInterfaceManager : ObservableObject {
+public partial class UserInterfaceManager : ObservableObject {
+    private readonly IAstroContract _apiInterface;
     private enum AvailableLanguages { 
         English, 
         French, 
@@ -33,31 +36,34 @@ internal partial class UserInterfaceManager : ObservableObject {
 
     [ObservableProperty] private FontSettings? _fontSettings;
     [ObservableProperty] private ColourSettings? _colourSettings;
+    [ObservableProperty] private DataValues? _inputedValue;
+    [ObservableProperty] private OutputValues? _calculationResults;
 
-    public UserInterfaceManager (){
-        InitialiseSettings();
-        InitialiseFontSettings();
-        InitialiseColorSettings();
-    }
-
-    private void InitialiseFontSettings (){
-        FontSettings = new FontSettings {
-            TitleFont = new FontFamily("Segoe UI"),
-            SubtitleFont = new FontFamily("Segoe UI"),
-            BodyFont = new FontFamily("Segoe UI"),
-            TitleFontSize = 24,
-            SubtitleFontSize = 16,
-            BodyFontSize = 12
-        };
-    }
-
-    private void InitialiseSettings (){
+    public UserInterfaceManager (IAstroContract contract){
+        _apiInterface = contract;
+        CalculationResults = new OutputValues();
+        InputedValue = new DataValues();
+        FontSettings = new FontSettings();
         currentLanguage = AvailableLanguages.English;
         currentTheme = DefaultThemes.Night;
         isNightTheme = true;
+
+        UpdateThemeColours();
     }
 
-    private void InitialiseColorSettings (){
+    [RelayCommand]
+    private void SwitchThemes (){
+        isNightTheme = !isNightTheme;
+        currentTheme = isNightTheme ? DefaultThemes.Night : DefaultThemes.Day;
+
+        ApplyTheme();
+        UpdateThemeColours();
+        ChangeLanguage();        
+    }
+
+    //  Tried moving this into the ColourSetting.cs, for some reason in broke the theme switching, so
+    //  moved it back to fix the issue
+    private void UpdateThemeColours (){
         ColourSettings = new ColourSettings {
             BackgroundColour = UISettingsService.GetColorFromResources("WindowBackground"),
             PanelBackgroundColour = UISettingsService.GetColorFromResources("PanelBackground"),
@@ -67,16 +73,6 @@ internal partial class UserInterfaceManager : ObservableObject {
             TitleBackgroundColour = UISettingsService.GetColorFromResources("WindowBackground"),
             ButtonBackgroundColour = UISettingsService.GetColorFromResources("ButtonBackground")
         };
-    }
-
-    [RelayCommand]
-    private void SwitchThemes (){
-        isNightTheme = !isNightTheme;
-        currentTheme = isNightTheme ? DefaultThemes.Night : DefaultThemes.Day;
-
-        ApplyTheme();
-        InitialiseColorSettings();
-        ChangeLanguage();
     }
 
     private void ApplyTheme (){
@@ -102,4 +98,109 @@ internal partial class UserInterfaceManager : ObservableObject {
 
     [RelayCommand]
     private void SwitchToEnglish() => SwitchLanguage(AvailableLanguages.English);
+
+    [RelayCommand]
+    private async Task CalculateVelocity (){
+        try {
+            if (CalculationResults?.Velocities == null){
+                LoggingManager.Instance.LogWarning("CalculationResults.Velocities is null.");
+                return;
+            }
+
+            if (InputedValue == null){
+                LoggingManager.Instance.LogWarning("InputedValue is null.");
+                return;
+            }
+            double velocity = await _apiInterface.CalculateStarVelocityAsync(InputedValue.ObservedWL, InputedValue.RestWL);
+
+            if (velocity > 0){
+                CalculationResults.Velocities.Add(new Measurement {
+                    Timestamp = DateTime.Now,
+                    Value = velocity
+                });
+            }
+        } catch (Exception ex){
+            LoggingManager.Instance.LogError(ex, "Failed to calculate the Velocity!");
+        }
+    }
+
+    [RelayCommand]
+    private async Task CalculateEventHorizon (){
+        try {
+            if (CalculationResults?.Horizons == null){
+                LoggingManager.Instance.LogWarning("CalculationResults.Velocities is null.");
+                return;
+            }
+
+            if (InputedValue == null){
+                LoggingManager.Instance.LogWarning("InputedValue is null.");
+                return;
+            }
+
+            double mass = await _apiInterface.CalculateEventHorizonAsync(InputedValue.Mass);
+
+            if (mass > 0){
+                CalculationResults.Horizons.Add(new Measurement {
+                    Timestamp = DateTime.Now,
+                    Value = mass
+                });
+            }
+        } catch (Exception ex){
+            LoggingManager.Instance.LogError(ex, "Failed to calculate the Event Horizon!");
+        }
+    }
+
+    [RelayCommand]
+    private async Task CalculateDistance (){
+        try {
+            if (CalculationResults?.Distances == null){
+                MessageBox.Show("Encountered an unexpected problem while trying to calculate the star distance.");
+                LoggingManager.Instance.LogWarning("CalculationResults.Velocities is null.");
+                return;
+            }
+
+            if (InputedValue == null){
+                MessageBox.Show("Inputed Value cannot be null when calculating the mass of the event horizon.");
+                LoggingManager.Instance.LogWarning("InputedValue is null.");
+                return;
+            }
+
+            double distance = await _apiInterface.CalculateStarDistanceParsecsAsync(InputedValue.ParalaxAngle);
+
+            if (distance > 0){
+                CalculationResults.Distances.Add(new Measurement {
+                    Timestamp = DateTime.Now,
+                    Value = distance
+                });
+            }
+        } catch (Exception ex){
+            LoggingManager.Instance.LogError(ex, "Failed to calculate the star distance!");
+        }
+    }
+
+    [RelayCommand]
+    private async Task ConvertTemperature (){
+        try {
+            if (CalculationResults?.Temperatures == null){
+                LoggingManager.Instance.LogWarning("CalculationResults.Temperatures is null.");
+                return;
+            }
+
+            if (InputedValue == null){
+                LoggingManager.Instance.LogWarning("InputedValue is null.");
+                return;
+            }
+
+            double result = await _apiInterface.ConvertCelsiusToKelvinAsync(InputedValue.Temperature);
+
+            if (result > 0){                
+                CalculationResults.Temperatures.Add(new Measurement {
+                    Timestamp = DateTime.Now,
+                    Value = result
+                });
+            }
+        } catch (Exception ex){
+            LoggingManager.Instance.LogError(ex, "Failed to convert the temperature!");
+        }
+    }
 }

@@ -4,19 +4,13 @@ using System.Windows;
 namespace ClientDevice;
 
 public partial class MainWindow : Window {
-    private readonly UserInterfaceManager viewModel;
+    private readonly UserInterfaceManager _viewModel;
 
-    public MainWindow (){
+    public MainWindow (UserInterfaceManager viewModel){
         InitializeComponent();
 
-        viewModel = new UserInterfaceManager();
+        _viewModel = viewModel;
 
-        SetDataContext();
-    }
-
-    //  This method sets the data context for the Main Window, to the User Interface Manager,
-    //  essentially this tells the Main Window to obtain its data from the associated View Model.
-    private void SetDataContext (){
-        this.DataContext = viewModel;
+        DataContext = _viewModel;
     }
 }

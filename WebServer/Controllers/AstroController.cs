@@ -20,7 +20,7 @@ public class AstroController(IAstroContract astro) : ControllerBase {
         try {
             double result = await _astro.CalculateStarVelocityAsync(req.ObservedWavelength, req.RestWavelength);
 
-            return Ok(new ValueResponse { Value = result, Formatted = FormatScientific(result), Unit = "m/s" });
+            return Ok(result);
         } catch (ArgumentOutOfRangeException ex){
             LoggingManager.Instance.LogError(ex, "Web Server: Astro Controller - Velocity Method.");
 
@@ -41,7 +41,7 @@ public class AstroController(IAstroContract astro) : ControllerBase {
         try {
             double result = await _astro.CalculateStarDistanceParsecsAsync(req.ParallaxAngle);
 
-            return Ok(new ValueResponse { Value = result, Formatted = FormatScientific(result), Unit = "pc" });
+            return Ok(result);
         } catch (ArgumentOutOfRangeException ex){
             LoggingManager.Instance.LogError(ex, "Web Server: Astro Controller - Distance Method.");
 
@@ -62,7 +62,7 @@ public class AstroController(IAstroContract astro) : ControllerBase {
         try {
             double result = await _astro.ConvertCelsiusToKelvinAsync(req.Celsius);
 
-            return Ok(new ValueResponse { Value = result, Formatted = FormatScientific(result), Unit = "K" });
+            return Ok(result);
         } catch (ArgumentOutOfRangeException ex){
             LoggingManager.Instance.LogError(ex, "Web Server: Astro Controller - Temperature Method.");
 
@@ -82,7 +82,7 @@ public class AstroController(IAstroContract astro) : ControllerBase {
 
         try {
             double result = await _astro.CalculateEventHorizonAsync(req.Mass);
-            return Ok (new ValueResponse { Value = result, Formatted = FormatScientific(result), Unit = "m" });
+            return Ok (result);
         } catch (ArgumentOutOfRangeException ex){
             LoggingManager.Instance.LogError(ex, "Web Server: Astro Controller - Event Horizon Method.");
 
@@ -92,16 +92,5 @@ public class AstroController(IAstroContract astro) : ControllerBase {
 
             return StatusCode(500, new { error = "internal_error", message = ex.Message });
         }
-    }
-
-    private static string FormatScientific (double value, int significantDigits = 4){
-        if (double.IsNaN(value) || double.IsInfinity(value)){
-            return value.ToString(CultureInfo.InvariantCulture);
-        }
-
-        //  Use "G" or custom formatting to produce scientific notation with n significant digits.
-        //  Will format as: 1.234E+05
-        string fmt = "E" + (significantDigits - 1).ToString();
-        return value.ToString(fmt, CultureInfo.InvariantCulture);
     }
 }

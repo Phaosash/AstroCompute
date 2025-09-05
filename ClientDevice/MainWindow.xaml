@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClientDevice"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:viewmodels="clr-namespace:ClientDevice.Classes" 
-        xmlns:convert="clr-namespace:ClientDevice.Resources"
-        d:DataContext="{d:DesignInstance Type=viewmodels:UserInterfaceManager, IsDesignTimeCreatable=True}"
+        xmlns:convert="clr-namespace:ClientDevice.Resources" 
+        xmlns:classes="clr-namespace:ClientDevice.Classes" 
+        d:DataContext="{d:DesignInstance Type=classes:UserInterfaceManager}"
         mc:Ignorable="d"
         Title="Astro Compute" Height="768" Width="1360">
 
@@ -352,15 +352,19 @@
                            FontFamily="{Binding FontSettings.BodyFont}" />
 
                 <!--    Input Field -->
-                <TextBox Margin="2.5" Grid.Row="2" Grid.Column="0"
-                         FontSize="{Binding FontSettings.BodyFontSize}"
-                         FontFamily="{Binding FontSettings.BodyFont}" />
+                <xctk:DoubleUpDown Margin="2.5" Grid.Row="2" Grid.Column="0"
+                                   FontSize="{Binding FontSettings.BodyFontSize}"
+                                   FontFamily="{Binding FontSettings.BodyFont}"
+                                   FormatString="G"
+                                   Value="{Binding InputedValue.Mass}"
+                                   Minimum="0" Maximum="1E12"/>
                 
                 <!--    Calculate Button    -->
                 <Button Content="{DynamicResource CalculateButtonText}" 
                         Grid.Column="0" Grid.Row="5" Margin="2.5" 
                         Padding="2.5" FontSize="{Binding FontSettings.BodyFontSize}"
                         FontFamily="{Binding FontSettings.BodyFont}"
+                        Command="{Binding CalculateEventHorizonCommand}"
                         Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
                         Background="{Binding ColourSettings.ButtonBackgroundColour, Converter={StaticResource ColorToBrushConverter}}" />
 
@@ -374,8 +378,18 @@
                 <ListView Margin="2.5" Grid.Column="0" Grid.Row="7" BorderBrush="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
                           FontFamily="{Binding FontSettings.BodyFont}"
                           FontSize="{Binding FontSettings.BodyFontSize}"
+                          ItemsSource="{Binding CalculationResults.Horizons}"
                           Background="{Binding ColourSettings.PanelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
-                          Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"/>
+                          Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:dd/MM/yyyy HH:mm:ss}'}" Margin="0,0,10,0"/>
+                                <TextBlock Text="{Binding Value, StringFormat='{}{0:E} m'}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
                 <!--    Star Distance Section   -->
                 <!--    Title   -->
@@ -394,14 +408,18 @@
                            Grid.Column="1" Grid.Row="1" Margin="2.5" />
 
                 <!--    Input Field     -->
-                <TextBox Grid.Row="2" Grid.Column="1" Margin="2.5"
-                         FontSize="{Binding FontSettings.BodyFontSize}"
-                         FontFamily="{Binding FontSettings.BodyFont}" />
+                <xctk:DoubleUpDown Margin="2.5" Grid.Row="2" Grid.Column="1"
+                                   FontSize="{Binding FontSettings.BodyFontSize}"
+                                   FontFamily="{Binding FontSettings.BodyFont}"
+                                   FormatString="G"
+                                   Value="{Binding InputedValue.ParalaxAngle}"
+                                   Minimum="0" Maximum="1E12"/>
                 
                 <!--    Calculation Button  -->
                 <Button Content="{DynamicResource CalculateButtonText}" 
                         Grid.Column="1" Grid.Row="5" FontSize="{Binding FontSettings.BodyFontSize}" 
                         Margin="2.5" Padding="2.5"
+                        Command="{Binding CalculateDistanceCommand}"
                         Background="{Binding ColourSettings.ButtonBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
                         FontFamily="{Binding FontSettings.BodyFont}"
                         Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" />
@@ -414,12 +432,21 @@
                            Grid.Column="1" Grid.Row="6"/>
                 
                 <!--    Output field    -->
-                <ListView Margin="2.5" Grid.Column="1" Grid.Row="7" 
-                          BorderBrush="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
+                <ListView Margin="2.5" Grid.Column="1" Grid.Row="7" BorderBrush="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
                           FontFamily="{Binding FontSettings.BodyFont}"
                           FontSize="{Binding FontSettings.BodyFontSize}"
+                          ItemsSource="{Binding CalculationResults.Distances}"
                           Background="{Binding ColourSettings.PanelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
-                          Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"/>
+                          Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:dd/MM/yyyy HH:mm:ss}'}" Margin="0,0,10,0"/>
+                                <TextBlock Text="{Binding Value, StringFormat='{}{0:E} pc'}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
 
                 <!--    Star Velocity Section   -->
                 <!--    Title   -->
@@ -438,9 +465,12 @@
                            FontFamily="{Binding FontSettings.BodyFont}" />
                 
                 <!--    Wave Length Input Field -->
-                <TextBox Margin="2.5" FontSize="{Binding FontSettings.BodyFontSize}"
-                         FontFamily="{Binding FontSettings.BodyFont}"
-                         Grid.Column="2" Grid.Row="2" />
+                <xctk:DoubleUpDown Margin="2.5" Grid.Row="2" Grid.Column="2"
+                                   FontSize="{Binding FontSettings.BodyFontSize}"
+                                   FontFamily="{Binding FontSettings.BodyFont}"
+                                   FormatString="G"
+                                   Value="{Binding InputedValue.ObservedWL}"
+                                   Minimum="0" Maximum="1E12" />
 
                 <!--    Rest Wave Length Prompt -->
                 <TextBlock Text="{DynamicResource RestWaveLengthPromptText}" 
@@ -450,14 +480,19 @@
                            FontFamily="{Binding FontSettings.BodyFont}" />
                 
                 <!--    Rest Wave Length Input  -->
-                <TextBox Margin="2.5" FontFamily="{Binding FontSettings.BodyFont}"
-                         Grid.Column="2" Grid.Row="4" />
+                <xctk:DoubleUpDown Margin="2.5" Grid.Row="4" Grid.Column="2"
+                                   FontSize="{Binding FontSettings.BodyFontSize}"
+                                   FontFamily="{Binding FontSettings.BodyFont}"
+                                   FormatString="G"
+                                   Value="{Binding InputedValue.RestWL}"
+                                   Minimum="0" Maximum="1E12"/>
                 
                 <!--    Calculation Button  -->
                 <Button Content="{DynamicResource CalculateButtonText}" 
                         Grid.Column="2" Grid.Row="5" Padding="2.5" 
                         Margin="2.5" FontSize="{Binding FontSettings.BodyFontSize}"
                         VerticalAlignment="Bottom"
+                        Command="{Binding CalculateVelocityCommand}"
                         FontFamily="{Binding FontSettings.BodyFont}"
                         Background="{Binding ColourSettings.ButtonBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
                         Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"/>
@@ -470,13 +505,22 @@
                            Grid.Column="2" Grid.Row="6"/>
 
                 <!--    Output field    -->
-                <ListView Margin="2.5" Grid.Column="2" Grid.Row="7" 
-                          BorderBrush="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
+                <ListView Margin="2.5" Grid.Column="2" Grid.Row="7" BorderBrush="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
                           FontFamily="{Binding FontSettings.BodyFont}"
                           FontSize="{Binding FontSettings.BodyFontSize}"
+                          ItemsSource="{Binding CalculationResults.Velocities}"
                           Background="{Binding ColourSettings.PanelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
-                          Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"/>
-                
+                          Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:dd/MM/yyyy HH:mm:ss}'}" Margin="0,0,10,0"/>
+                                <TextBlock Text="{Binding Value, StringFormat='{}{0:N3} m/s'}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
                 <!--    Temperature Conversion Section  -->
                 <!--    Title   -->
                 <TextBlock Text="{DynamicResource TemperatureConversionTitle}" 
@@ -495,13 +539,18 @@
                            Grid.Row="1" />
 
                 <!--    Input Field     -->
-                <TextBox Grid.Row="2" Grid.Column="3" Margin="2.5"
-                         FontSize="{Binding FontSettings.BodyFontSize}" />
+                <xctk:DoubleUpDown Margin="2.5" Grid.Row="2" Grid.Column="3"
+                                   FontSize="{Binding FontSettings.BodyFontSize}"
+                                   FontFamily="{Binding FontSettings.BodyFont}"
+                                   FormatString="G"
+                                   Value="{Binding InputedValue.Temperature}"
+                                   Minimum="0" Maximum="1E12" />
                 
                 <!--    Calculation Button  -->
                 <Button Content="{DynamicResource CalculateButtonText}" 
                         Grid.Column="3" Grid.Row="5" 
                         Margin="2.5" Padding="2.5"
+                        Command="{Binding ConvertTemperatureCommand}"
                         FontFamily="{Binding FontSettings.BodyFont}"
                         FontSize="{Binding FontSettings.BodyFontSize}"
                         Background="{Binding ColourSettings.ButtonBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
@@ -515,12 +564,21 @@
                            Grid.Column="3" Grid.Row="6"/>
 
                 <!--    Output field    -->
-                <ListView Margin="2.5" Grid.Column="3" Grid.Row="7" 
-                          BorderBrush="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
+                <ListView Margin="2.5" Grid.Column="3" Grid.Row="7" BorderBrush="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
                           FontFamily="{Binding FontSettings.BodyFont}"
                           FontSize="{Binding FontSettings.BodyFontSize}"
+                          ItemsSource="{Binding CalculationResults.Temperatures}"
                           Background="{Binding ColourSettings.PanelBackgroundColour, Converter={StaticResource ColorToBrushConverter}}"
-                          Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"/>
+                          Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:dd/MM/yyyy HH:mm:ss}'}" Margin="0,0,10,0"/>
+                                <TextBlock Text="{Binding Value, StringFormat='{}{0:N3} K'}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Grid> <!--    End Calculations and Display Section    -->
         </Grid> <!--    End Main Content Area   -->
     </Grid>

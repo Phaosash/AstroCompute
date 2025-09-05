@@ -1,8 +1,8 @@
 ﻿using System.Windows.Media;
 
-namespace ClientDevice.Classes;
+namespace ClientDevice.DataModels;
 
-internal class ColourSettings {
+public class ColourSettings {
     public Color BackgroundColour { get; set; }
     public Color PanelBackgroundColour { get; set; }
     public Color TitleTextColour { get; set; }

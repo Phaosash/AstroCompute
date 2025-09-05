@@ -42,7 +42,7 @@ public partial class UserInterfaceManager : ObservableObject {
         IsNightTheme = !IsNightTheme;
         _theme = IsNightTheme ? Themes.Night : Themes.Day;
 
-        UpdateColours();   
+        UpdateTheme();   
     }
 
     private void UpdateTheme (){

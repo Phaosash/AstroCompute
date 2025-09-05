@@ -39,4 +39,5 @@
     <System:String x:Key="TextSectionSubtitle1">Titles</System:String>
     <System:String x:Key="TextSectionTitle">Text Options</System:String>
     <System:String x:Key="VersionText">Version</System:String>
+    <System:String x:Key="OutputSubTitle">Output Data</System:String>
 </ResourceDictionary>

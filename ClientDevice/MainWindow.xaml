@@ -368,7 +368,7 @@
                         Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"
                         Background="{Binding ColourSettings.ButtonBackgroundColour, Converter={StaticResource ColorToBrushConverter}}" />
 
-                <TextBlock Text="Output Data" Margin="2.5,10,2.5,2.5" Padding="2.5"
+                <TextBlock Text="{DynamicResource OutputSubTitle}" Margin="2.5,10,2.5,2.5" Padding="2.5"
                            FontSize="{Binding FontSettings.SubtitleFontSize}"
                            FontFamily="{Binding FontSettings.SubtitleFont}"
                            Foreground="{Binding ColourSettings.SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}"
@@ -425,7 +425,7 @@
                         Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" />
 
                 <!--    Output Title-->
-                <TextBlock Text="Output Data" Margin="2.5,10,2.5,2.5" Padding="2.5"
+                <TextBlock Text="{DynamicResource OutputSubTitle}" Margin="2.5,10,2.5,2.5" Padding="2.5"
                            FontSize="{Binding FontSettings.SubtitleFontSize}"
                            FontFamily="{Binding FontSettings.SubtitleFont}"
                            Foreground="{Binding ColourSettings.SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}"
@@ -498,7 +498,7 @@
                         Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}"/>
 
                 <!--    Output Title-->
-                <TextBlock Text="Output Data" Margin="2.5,10,2.5,2.5" Padding="2.5"
+                <TextBlock Text="{DynamicResource OutputSubTitle}" Margin="2.5,10,2.5,2.5" Padding="2.5"
                            FontSize="{Binding FontSettings.SubtitleFontSize}"
                            FontFamily="{Binding FontSettings.SubtitleFont}"
                            Foreground="{Binding ColourSettings.SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}"
@@ -557,7 +557,7 @@
                         Foreground="{Binding ColourSettings.BodyTextColour, Converter={StaticResource ColorToBrushConverter}}" />
 
                 <!--    Output Title-->
-                <TextBlock Text="Output Data" Margin="2.5,10,2.5,2.5" Padding="2.5"
+                <TextBlock Text="{DynamicResource OutputSubTitle}" Margin="2.5,10,2.5,2.5" Padding="2.5"
                            FontSize="{Binding FontSettings.SubtitleFontSize}"
                            FontFamily="{Binding FontSettings.SubtitleFont}"
                            Foreground="{Binding ColourSettings.SubtitleTextColour, Converter={StaticResource ColorToBrushConverter}}"

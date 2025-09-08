@@ -1,5 +1,4 @@
-﻿using ClientDevice.Classes;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Media;
 
 namespace ClientDevice.DataModels;

@@ -37,4 +37,10 @@
     <System:String x:Key="VersionText">Version</System:String>
     <System:String x:Key="OutputSubTitle">Données de sortie</System:String>
     <System:String x:Key="ThemeSwitchPrompt">Passer en mode jour/nuit</System:String>
+    <System:String x:Key="InputWarning">Entrée invalide, veuillez saisir un numéro valide</System:String>
+    <System:String x:Key="CalculationSuccessful">Le calcul a réussi, le résultat était :</System:String>
+    <System:String x:Key="CalculationFailure">Impossible de terminer le calcul, quelque chose s'est mal passé !</System:String>
+    <System:String x:Key="InformationMessage">Information</System:String>
+    <System:String x:Key="ErrorMessage">Erreur</System:String>
+    <System:String x:Key="NullCalculation">CalculsRésultats non trouvés</System:String>
 </ResourceDictionary>

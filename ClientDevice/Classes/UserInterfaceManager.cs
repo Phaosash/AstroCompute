@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ErrorLogging;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace ClientDevice.Classes;
 
@@ -53,8 +54,6 @@ public partial class UserInterfaceManager : ObservableObject {
     }
 
     private void UpdateColours (){
-        //  Tried moving this into the ColourSetting.cs, for some reason in broke the theme switching, so
-        //  moved it back to fix the issue
         ColourSettings = new ColourSettings {
             BackgroundColour = UISettingsService.GetColorFromResources("WindowBackground"),
             PanelBackgroundColour = UISettingsService.GetColorFromResources("PanelBackground"),
@@ -84,21 +83,31 @@ public partial class UserInterfaceManager : ObservableObject {
     private async Task<double> GetResultAsync (CalculationTypes types){
         if (InputedValue == null){
             LoggingManager.Instance.LogWarning("Input is null.");
+            MessageBox.Show((string)Application.Current.Resources["InputWarning"], (string)Application.Current.Resources["ErrorMessage"], MessageBoxButton.OK, MessageBoxImage.Error);
             return -1;
         }
 
         _lastCalculation = types;
 
         try {
-            return types switch {
+            double result = types switch {
                 CalculationTypes.Distance => await _apiInterface.CalculateStarDistanceParsecsAsync(InputedValue.ParalaxAngle),
                 CalculationTypes.Temperature => await _apiInterface.ConvertCelsiusToKelvinAsync(InputedValue.Temperature),
                 CalculationTypes.Mass => await _apiInterface.CalculateEventHorizonAsync(InputedValue.Mass),
                 CalculationTypes.Velocity => await _apiInterface.CalculateStarVelocityAsync(InputedValue.ObservedWL, InputedValue.RestWL),
                 _ => -1
             };
+
+            if (result < 0 && types != CalculationTypes.Velocity){
+                LoggingManager.Instance.LogWarning($"Negative result for {types} calculation.");
+                MessageBox.Show("Calculation result cannot be negative.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return -1;
+            }
+
+            return result;
         } catch (Exception ex) {
             LoggingManager.Instance.LogError(ex, "Error during calculation.");
+            MessageBox.Show((string)Application.Current.Resources["CalculationFailure"], (string)Application.Current.Resources["ErrorMessage"], MessageBoxButton.OK, MessageBoxImage.Error);
             return -1;
         }
     }
@@ -107,13 +116,22 @@ public partial class UserInterfaceManager : ObservableObject {
         var result = await GetResultAsync(types);
         
         if (result >= 0) {
+            MessageBox.Show((string)Application.Current.Resources["CalculationSuccessful"] + " " + result, (string)Application.Current.Resources["InformationMessage"], MessageBoxButton.OK, MessageBoxImage.None);
+            LoggingManager.Instance.LogInformation($"The Calculation was successfully completed, resulting value {result}");
             var list = GetResultList(types);
             list?.Add(new Measurement { Timestamp = DateTime.Now, Value = result });
+        } else {
+            MessageBox.Show((string)Application.Current.Resources["CalculationFailure"], (string)Application.Current.Resources["ErrorMessage"], MessageBoxButton.OK, MessageBoxImage.Error);
+            LoggingManager.Instance.LogWarning("The Calculation was unccessful!");
         }
     }
 
     private ObservableCollection<Measurement>? GetResultList (CalculationTypes type){
-        if (CalculationResults == null) return null;
+        if (CalculationResults == null){
+            MessageBox.Show((string)Application.Current.Resources["NullCalculation"], (string)Application.Current.Resources["ErrorMessage"], MessageBoxButton.OK, MessageBoxImage.Error);
+            LoggingManager.Instance.LogWarning("The Calculation Results is null!");
+            return null;
+        }
 
         return type switch {
             CalculationTypes.Distance => CalculationResults.Distances,

@@ -37,4 +37,10 @@
     <System:String x:Key="VersionText">Version</System:String>
     <System:String x:Key="OutputSubTitle">Ausgabedaten</System:String>
     <System:String x:Key="ThemeSwitchPrompt">Wechseln Sie in den Tag-/Nachtmodus</System:String>
+    <System:String x:Key="InputWarning">Ungültige Eingabe, bitte geben Sie eine gültige Nummer ein</System:String>
+    <System:String x:Key="CalculationSuccessful">Die Berechnung war erfolgreich, das Ergebnis war:</System:String>
+    <System:String x:Key="CalculationFailure">Die Berechnung konnte nicht abgeschlossen werden, etwas ist schiefgelaufen!</System:String>
+    <System:String x:Key="InformationMessage">Information</System:String>
+    <System:String x:Key="ErrorMessage">Fehler</System:String>
+    <System:String x:Key="NullCalculation">BerechnungenErgebnisse nicht gefunden</System:String>
 </ResourceDictionary>

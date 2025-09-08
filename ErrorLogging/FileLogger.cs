@@ -20,7 +20,13 @@ internal class FileLogger {
 
     private static void LogToFile (string logMessage){
         try {
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs", "logfile.txt");
+            string logsDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
+
+            if (!Directory.Exists(logsDirectory)){
+                Directory.CreateDirectory(logsDirectory);
+            }
+
+            string filePath = Path.Combine(logsDirectory, "logfile.txt");
             File.AppendAllText(filePath, logMessage + Environment.NewLine);
         } catch (Exception ex){
             Console.WriteLine($"Error writing to log file: {ex.Message}");

@@ -12,9 +12,7 @@ public partial class MainWindow : Window {
     public MainWindow (UserInterfaceManager viewModel){
         try {
             InitializeComponent();
-
             _viewModel = viewModel;
-
             DataContext = _viewModel;
         } catch (Exception ex){ 
             LoggingManager.Instance.LogError(ex, "Failed to initialise the MainWindow");

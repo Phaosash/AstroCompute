@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace ClientDevice.DataModels;
+namespace ClientManager.DataModels;
 
 public class FontSettings {
     public FontFamily TitleFont { get; set; } = new FontFamily("Segoe UI");

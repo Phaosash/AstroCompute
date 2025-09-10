@@ -5,8 +5,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/EnglishDictionary.xaml" />
-                <ResourceDictionary Source="/Resources/NightTheme.xaml" />
+                <ResourceDictionary Source="/ClientManager;component/Resources/EnglishDictionary.xaml" />
+                <ResourceDictionary Source="/ClientManager;component/Resources/NightTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

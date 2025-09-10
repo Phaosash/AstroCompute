@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClientDevice"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:convert="clr-namespace:ClientDevice.Resources" 
-        xmlns:classes="clr-namespace:ClientDevice.Classes" 
+        xmlns:convert="clr-namespace:ClientManager.Resources;assembly=ClientManager" 
+        xmlns:classes="clr-namespace:ClientManager.Classes;assembly=ClientManager" 
         d:DataContext="{d:DesignInstance Type=classes:UserInterfaceManager}"
         mc:Ignorable="d"
         Title="Astro Compute" Height="768" Width="1360">

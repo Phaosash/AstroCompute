@@ -1,8 +1,9 @@
 ﻿using ErrorLogging;
+using System.IO;
 using System.Windows;
 using System.Windows.Media;
 
-namespace ClientDevice.Classes;
+namespace ClientManager.Classes;
 
 internal class UISettingsService {
     //  This method retrieves a Color from the application's resources using the provided key.
@@ -14,10 +15,13 @@ internal class UISettingsService {
     //  the existing merged dictionaries, and logs an error if the operation fails, displaying a
     //  message box with the error details.
     public static void UpdateResourceDictionary (Uri resourceUri){
-        try {
+        try {            
             var dictionary = new ResourceDictionary { Source = resourceUri };
             Application.Current.Resources.MergedDictionaries.Clear();
             Application.Current.Resources.MergedDictionaries.Add(dictionary);
+        } catch (IOException ex){
+            LoggingManager.Instance.LogError(ex, "IO Exception Occured");
+            MessageBox.Show($"IOException Occured: {resourceUri} - {ex.Message}");
         } catch (Exception ex) {
             MessageBox.Show($"Error loading resource: {resourceUri} - {ex.Message}");
             LoggingManager.Instance.LogError(ex, "Failed to update the resource dictionary");

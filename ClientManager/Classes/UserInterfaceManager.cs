@@ -1,13 +1,13 @@
-﻿using ClientDevice.DataModels;
+﻿using ClientManager.DataModels;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ErrorLogging;
 using System.Collections.ObjectModel;
 using System.Windows;
 
-namespace ClientDevice.Classes;
+namespace ClientManager.Classes;
 
-public partial class UserInterfaceManager : ObservableObject {
+public partial class UserInterfaceManager: ObservableObject {
     private readonly IAstroContract _apiInterface;
     private enum Languages { English, French, German }
     private enum Themes { Day, Night }
@@ -56,7 +56,7 @@ public partial class UserInterfaceManager : ObservableObject {
     //  and changing the language, while handling errors by logging them.
     private void UpdateTheme (){
         try {
-            var uri = new Uri(_themePaths[_theme], UriKind.Relative);
+            var uri = new Uri($"pack://application:,,,/ClientManager;component/{_themePaths[_theme]}", UriKind.Absolute);
             UISettingsService.UpdateResourceDictionary(uri);
             UpdateColours();
             ChangeLanguage(_language);
@@ -88,7 +88,7 @@ public partial class UserInterfaceManager : ObservableObject {
     private void ChangeLanguage (Languages language){
         try {
             _language = language;
-            var languageUri = new Uri(_languagePaths[_language], UriKind.Relative);
+            var languageUri = new Uri($"pack://application:,,,/ClientManager;component/{_languagePaths[_language]}", UriKind.Absolute);
             UISettingsService.UpdateResourceDictionary(languageUri);
         } catch (Exception ex){
             LoggingManager.Instance.LogError(ex, "Failed to change to to either English, French or German");

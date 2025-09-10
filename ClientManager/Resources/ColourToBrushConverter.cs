@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace ClientDevice.Resources;
+namespace ClientManager.Resources;
 
 public class ColourToBrushConverter: IValueConverter {
     //  This method is used to conviert a Colour into a Solid Colour Brush, so that it can be

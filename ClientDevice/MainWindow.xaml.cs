@@ -1,4 +1,4 @@
-﻿using ClientDevice.Classes;
+﻿using ClientManager.Classes;
 using ErrorLogging;
 using System.Windows;
 

@@ -1,7 +1,7 @@
-﻿namespace ClientDevice.Classes;
+﻿namespace ClientManager.Classes;
 
 public interface IAstroContract {
-    //  Calculates star velocity (m/s) from observed and rest wavelengths (nm).
+     //  Calculates star velocity (m/s) from observed and rest wavelengths (nm).
     Task<double> CalculateStarVelocityAsync(double observedWavelengthNm, double restWavelengthNm);
 
     //  Calculates distance in parsecs from parallax angle in arcseconds.

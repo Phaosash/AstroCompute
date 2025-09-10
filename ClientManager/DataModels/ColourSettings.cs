@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Media;
 
-namespace ClientDevice.DataModels;
+namespace ClientManager.DataModels;
 
-public partial class ColourSettings : ObservableObject {
+public partial class ColourSettings: ObservableObject {
     private Color _backgroundColour;
     private Color _panelBackgroundColour;
     private Color _titleTextColour;
@@ -11,7 +11,7 @@ public partial class ColourSettings : ObservableObject {
     private Color _bodyTextColour;
     private Color _titleBackgroundColour;
     private Color _buttonBackgroundColour;
-    
+
     public Color BackgroundColour { 
         get => _backgroundColour;
         set {

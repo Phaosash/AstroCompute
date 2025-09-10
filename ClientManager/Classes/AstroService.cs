@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Net.Http.Json;
 
-namespace ClientDevice.Classes;
+namespace ClientManager.Classes;
 
 public class AstroService (HttpClient httpClient): IAstroContract {
     private readonly HttpClient _httpClient = httpClient;

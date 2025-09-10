@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace ClientDevice.DataModels;
+namespace ClientManager.DataModels;
 
 public class OutputValues {
     public ObservableCollection<Measurement> Velocities { get; set; } = [];

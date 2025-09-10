@@ -1,4 +1,4 @@
-﻿namespace ClientDevice.DataModels;
+﻿namespace ClientManager.DataModels;
 
 public class Measurement {
     public DateTime Timestamp { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace ClientDevice.DataModels;
+﻿namespace ClientManager.DataModels;
 
 public class DataValues {
     public double ObservedWL { get; set; } = 0;

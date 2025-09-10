@@ -1,4 +1,4 @@
-﻿using ClientDevice.Classes;
+﻿using ClientManager.Classes;
 using ErrorLogging;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;

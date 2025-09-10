@@ -1,9 +1,7 @@
-﻿namespace WebServer.Services;
+﻿namespace ClientManager.Classes;
 
-//  Contract for astronomical calculations.
-//  Mirrors the methods provided by the third-party AstroMath.dll.
 public interface IAstroContract {
-    //  Calculates star velocity (m/s) from observed and rest wavelengths (nm).
+     //  Calculates star velocity (m/s) from observed and rest wavelengths (nm).
     Task<double> CalculateStarVelocityAsync(double observedWavelengthNm, double restWavelengthNm);
 
     //  Calculates distance in parsecs from parallax angle in arcseconds.

@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ErrorLogging\ErrorLogging.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Resources\DayTheme.xaml">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\EnglishDictionary.xaml">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\FrenchDictionary.xaml">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\GermanDictionary.xaml">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Page>
+    <Page Update="Resources\NightTheme.xaml">
+      <CopyToOutputDirectory></CopyToOutputDirectory>
+    </Page>
+  </ItemGroup>
+
+</Project>

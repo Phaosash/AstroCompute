@@ -10,6 +10,9 @@ namespace WebServer.Controllers;
 public class AstroController(IAstroContract astro) : ControllerBase {
     private readonly IAstroContract _astro = astro;
 
+    //  This endpoint handles HTTP POST requests to calculate the velocity of a star based on observed and rest wavelengths.
+    //  It validates the input model, calls an asynchronous velocity calculation method, and returns the result or appropriate
+    //  error responses for invalid data or unexpected exceptions.
     [HttpPost("velocity")]
     public async Task<IActionResult> Velocity ([FromBody] StarVelocityRequest req){
         if (!ModelState.IsValid){
@@ -31,6 +34,9 @@ public class AstroController(IAstroContract astro) : ControllerBase {
         }
     }
 
+    //  This POST endpoint calculates the distance to a star in parsecs using the provided parallax angle.
+    //  It validates the input, performs the calculation asynchronously, and handles errors by returning
+    //  appropriate HTTP responses with logged details.
     [HttpPost("distance")]
     public async Task<IActionResult> Distance ([FromBody] StarDistanceRequest req){
         if (!ModelState.IsValid){
@@ -52,6 +58,9 @@ public class AstroController(IAstroContract astro) : ControllerBase {
         }
     }
 
+    //  This POST endpoint converts a temperature from Celsius to Kelvin asynchronously.
+    //  It validates the input, performs the conversion, and returns the result or appropriate
+    //  error responses with logging for any exceptions.
     [HttpPost("temperature")]
     public async Task<IActionResult> Temperature ([FromBody] TemperatureRequest req){
         if (!ModelState.IsValid){
@@ -73,6 +82,9 @@ public class AstroController(IAstroContract astro) : ControllerBase {
         }
     }
 
+    //  This POST endpoint calculates the event horizon radius based on the given mass.
+    //  It validates the input, performs the calculation asynchronously, and returns the result
+    //  or appropriate error responses with error logging.
     [HttpPost("eventhorizon")]
     public async Task<IActionResult> EventHorizon ([FromBody] EventHorizonRequest req){
         if (!ModelState.IsValid){

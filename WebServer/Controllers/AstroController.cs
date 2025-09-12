@@ -1,6 +1,5 @@
 ﻿using ErrorLogging;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 using WebServer.ApiModels;
 using WebServer.Services;
 
